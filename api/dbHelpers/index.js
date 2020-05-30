@@ -7,12 +7,12 @@ const getProjects = () => db("projects");
 const getTasks = () =>
   db("tasks as t")
     .select(
-      "t.id",
-      "t.descriptions as task_description",
-      "t.notes",
-      "t.completed",
-      "p.name",
-      "p.description"
+      "t.id as task_id",
+      "t.description as task_description",
+      "t.notes as task_notes",
+      "t.completed as task_completed",
+      "p.name as project_name",
+      "p.description as project_description"
     )
     .join("projects as p", "t.project_id", "p.id");
 

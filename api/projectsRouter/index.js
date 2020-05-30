@@ -1,7 +1,7 @@
 const express = require("express");
 
 const { getUndefinedProps } = require("../../utils");
-const { getResources, getResourceById } = require("../dbHelpers");
+const { addResource, getResources, getResourceById } = require("../dbHelpers");
 
 const router = express.Router();
 

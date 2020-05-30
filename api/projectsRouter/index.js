@@ -11,13 +11,13 @@ const {
   getResourceById,
   getProjectById,
   getTaskById,
-  syncProjectsResources,
+  syncProjectResource,
 } = require("../dbHelpers");
 
 const router = express.Router();
 
 router.post(
-  "/resources/:id",
+  "/:id/resources",
   validateId("projects"),
   validateBody("resources"),
   async (req, res, next) => {
@@ -25,7 +25,7 @@ router.post(
       const project_id = req.params.id;
 
       const [resource_id] = await addResource(req.body);
-      await syncProjectsResources({ project_id, resource_id });
+      await syncProjectResource({ project_id, resource_id });
       const addedResource = await getResourceById(addedResourceId);
 
       res.status(201).json(addedResource);

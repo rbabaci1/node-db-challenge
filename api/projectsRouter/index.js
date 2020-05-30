@@ -1,13 +1,16 @@
 const express = require("express");
 
-const { getResources } = require("../dbHelpers");
 const { getUndefinedProps } = require("../../utils");
+const { getResources, getResourceById } = require("../dbHelpers");
 
 const router = express.Router();
 
-router.post("/resources", async (req, res, next) => {
+router.post("/resources", validateBody("resources"), async (req, res, next) => {
   try {
     const [addedResourceId] = await addResource(req.body);
+    const addedResource = await getResourceById(addedResourceId);
+
+    res.status(201).json(addedResource);
   } catch ({ errno, code, message }) {
     next({
       message: "The resource could not be retrieved at this moment.",

@@ -88,7 +88,7 @@ function validateBody(tableName) {
     const results =
       tableName === "resources"
         ? getUndefinedProps({ name, description })
-        : getUndefinedProps({ name, quantity });
+        : getUndefinedProps({ name });
 
     if (!results) {
       next();

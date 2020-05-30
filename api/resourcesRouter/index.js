@@ -20,7 +20,7 @@ router.post(
 
       const [resource_id] = await addResource(req.body);
       await syncProjectResource({ project_id, resource_id });
-      const addedResource = await getResourceById(addedResourceId);
+      const addedResource = await getResourceById(resource_id);
 
       res.status(201).json(addedResource);
     } catch ({ errno, code, message }) {

@@ -189,11 +189,11 @@ function validateId(tableName) {
 
 function validateBody(tableName) {
   return (req, res, next) => {
-    const { name, description } = req.body;
+    const { name, description, project_id } = req.body;
 
     const results =
       tableName === "resources"
-        ? getUndefinedProps({ name, description })
+        ? getUndefinedProps({ name, description, project_id })
         : tableName === "projects"
         ? getUndefinedProps({ name })
         : getUndefinedProps({ description });

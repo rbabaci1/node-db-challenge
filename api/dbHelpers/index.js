@@ -4,6 +4,8 @@ const getResources = () => db("resources");
 
 const getProjects = () => db("projects");
 
+const getTasks = () => db("tasks");
+
 const getResourceById = id => db("resources").where({ id }).first();
 
 const getProjectById = id => db("projects").where({ id }).first();
@@ -17,6 +19,7 @@ module.exports = {
   addProject,
   getResources,
   getProjects,
+  getTasks,
   getResourceById,
   getProjectById,
 };

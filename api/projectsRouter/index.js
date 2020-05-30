@@ -6,6 +6,7 @@ const {
   addProject,
   getResources,
   getProjects,
+  getTasks,
   getResourceById,
   getProjectById,
 } = require("../dbHelpers");
@@ -73,6 +74,21 @@ router.get("/", async (req, res, next) => {
   } catch ({ errno, code, message }) {
     next({
       message: "The projects could not be retrieved at this moment.",
+      errno,
+      code,
+      reason: message,
+    });
+  }
+});
+
+router.get("/tasks", async (req, res, next) => {
+  try {
+    const resources = await getTasks();
+
+    res.status(200).json(resources);
+  } catch ({ errno, code, message }) {
+    next({
+      message: "The tasks could not be retrieved at this moment.",
       errno,
       code,
       reason: message,

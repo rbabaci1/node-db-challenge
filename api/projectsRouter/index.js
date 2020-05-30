@@ -15,21 +15,29 @@ const {
 
 const router = express.Router();
 
-router.post("/resources", validateBody("resources"), async (req, res, next) => {
-  try {
-    const [addedResourceId] = await addResource(req.body);
-    const addedResource = await getResourceById(addedResourceId);
+router.post(
+  "/:id/resources",
+  validateId("projects"),
+  validateBody("resources"),
+  async (req, res, next) => {
+    try {
+      const project_id = Number(req.params.id);
+      const newResource = { ...req.body, project_id };
 
-    res.status(201).json(addedResource);
-  } catch ({ errno, code, message }) {
-    next({
-      message: "The resource could not be added at this moment.",
-      errno,
-      code,
-      reason: message,
-    });
+      const [addedResourceId] = await addResource(newResource);
+      const addedResource = await getResourceById(addedResourceId);
+
+      res.status(201).json(addedResource);
+    } catch ({ errno, code, message }) {
+      next({
+        message: "The resource could not be added at this moment.",
+        errno,
+        code,
+        reason: message,
+      });
+    }
   }
-});
+);
 
 router.get("/resources", async (req, res, next) => {
   try {

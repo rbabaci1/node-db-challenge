@@ -83,6 +83,21 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+router.get("/:id", validateId("projects"), async (req, res, next) => {
+  try {
+    const project = await getProjectById(req.params.id);
+
+    res.status(200).json(project);
+  } catch ({ errno, code, message }) {
+    next({
+      message: "The project could not be retrieved at this moment.",
+      errno,
+      code,
+      reason: message,
+    });
+  }
+});
+
 router.get("/tasks", async (req, res, next) => {
   try {
     const resources = await getTasks();
@@ -121,6 +136,51 @@ router.post("/tasks", validateBody("tasks"), async (req, res, next) => {
 });
 
 /*********************  Validation Middleware ********************/
+function validateId(tableName) {
+  return async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const item =
+        tableName === "projects"
+          ? await getProjectById(id)
+          : (tableName = "resources")
+          ? await getResourceById(id)
+          : await getTaskById(id);
+
+      if (item) {
+        req[
+          tableName === "projects"
+            ? "project"
+            : (tableName = "tasks" ? "task" : "resource")
+        ] = item;
+        next();
+      } else {
+        next({
+          status: 404,
+          message: `The ${
+            tableName === "projects"
+              ? "project"
+              : tableName === "tasks"
+              ? "task"
+              : "resource"
+          } with the specified ID does not exist.`,
+        });
+      }
+    } catch (err) {
+      next({
+        error: `The  ${
+          tableName === "projects"
+            ? "project"
+            : tableName === "tasks"
+            ? "task"
+            : "resource"
+        } info could not be retrieved at this moment.`,
+        reason: err.message,
+      });
+    }
+  };
+}
+
 function validateBody(tableName) {
   return (req, res, next) => {
     const { name, description } = req.body;

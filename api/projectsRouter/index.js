@@ -4,11 +4,13 @@ const { getUndefinedProps } = require("../../utils");
 const {
   addResource,
   addProject,
+  addTask,
   getResources,
   getProjects,
   getTasks,
   getResourceById,
   getProjectById,
+  getTaskById,
 } = require("../dbHelpers");
 
 const router = express.Router();
@@ -96,6 +98,28 @@ router.get("/tasks", async (req, res, next) => {
   }
 });
 
+router.post("/tasks", validateBody("tasks"), async (req, res, next) => {
+  try {
+    const { body } = req;
+    const newTask = {
+      ...body,
+      ...(!body.completed && { completed: false }),
+    };
+
+    const [addedTaskId] = await addTask(newTask);
+    const addedTask = await getTaskById(addedTaskId);
+
+    res.status(201).json(addedTask);
+  } catch ({ errno, code, message }) {
+    next({
+      message: "The task could not be added at this moment.",
+      errno,
+      code,
+      reason: message,
+    });
+  }
+});
+
 /*********************  Validation Middleware ********************/
 function validateBody(tableName) {
   return (req, res, next) => {
@@ -104,7 +128,9 @@ function validateBody(tableName) {
     const results =
       tableName === "resources"
         ? getUndefinedProps({ name, description })
-        : getUndefinedProps({ name });
+        : tableName === "projects"
+        ? getUndefinedProps({ name })
+        : getUndefinedProps({ description });
 
     if (!results) {
       next();

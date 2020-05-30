@@ -21,6 +21,12 @@ const getResourceById = id => db("resources").where({ id }).first();
 
 const getProjectById = id => db("projects").where({ id }).first();
 
+const getProjectTasks = project_id => {
+  return db("tasks as t")
+    .select("t.id", "t.description", "t.notes", "t.completed")
+    .where({ project_id });
+};
+
 const getTaskById = id => db("tasks").where({ id }).first();
 
 const addResource = newResource => {
@@ -45,5 +51,6 @@ module.exports = {
   getTasks,
   getResourceById,
   getProjectById,
+  getProjectTasks,
   getTaskById,
 };

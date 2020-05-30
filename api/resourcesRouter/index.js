@@ -1,8 +1,38 @@
 const express = require("express");
 
-const { getResources } = require("../dbHelpers");
-
 const router = express.Router();
+
+const {
+  addResource,
+  syncProjectResource,
+  getResources,
+  getResourceById,
+} = require("../dbHelpers");
+const { validateId, validateBody } = require("../../utils");
+
+router.post(
+  "/:id",
+  validateId("projects"),
+  validateBody("resources"),
+  async (req, res, next) => {
+    try {
+      const project_id = req.params.id;
+
+      const [resource_id] = await addResource(req.body);
+      await syncProjectResource({ project_id, resource_id });
+      const addedResource = await getResourceById(addedResourceId);
+
+      res.status(201).json(addedResource);
+    } catch ({ errno, code, message }) {
+      next({
+        message: "The resource could not be added at this moment.",
+        errno,
+        code,
+        reason: message,
+      });
+    }
+  }
+);
 
 router.get("/", async (req, res, next) => {
   try {

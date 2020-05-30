@@ -8,6 +8,7 @@ const {
   getProjects,
   getProjectById,
   getProjectTasks,
+  getProjectResources,
 } = require("../dbHelpers");
 
 router.post("/", validateBody("projects"), async (req, res, next) => {
@@ -53,8 +54,9 @@ router.get("/:id", validateId("projects"), async (req, res, next) => {
 
     const project = await getProjectById(id);
     const tasks = await getProjectTasks(id);
+    const resources = await getProjectResources(id);
 
-    res.status(200).json({ ...project, tasks });
+    res.status(200).json({ project, tasks, resources });
   } catch ({ errno, code, message }) {
     next({
       message: "The project could not be retrieved at this moment.",

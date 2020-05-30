@@ -45,7 +45,13 @@ router.get("/resources", async (req, res, next) => {
 
 router.post("/", validateBody("projects"), async (req, res, next) => {
   try {
-    const [addedProjectId] = await addProject(req.body);
+    const { body } = req;
+    const newProject = {
+      ...body,
+      ...(!body.completed && { completed: false }),
+    };
+
+    const [addedProjectId] = await addProject(newProject);
     const addedProject = await getProjectById(addedProjectId);
 
     res.status(201).json(addedProject);

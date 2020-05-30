@@ -85,9 +85,7 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:id", validateId("projects"), async (req, res, next) => {
   try {
-    const project = await getProjectById(req.params.id);
-
-    res.status(200).json(project);
+    res.status(200).json(req.project);
   } catch ({ errno, code, message }) {
     next({
       message: "The project could not be retrieved at this moment.",

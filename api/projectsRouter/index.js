@@ -1,7 +1,13 @@
 const express = require("express");
 
 const { getUndefinedProps } = require("../../utils");
-const { addResource, getResources, getResourceById } = require("../dbHelpers");
+const {
+  addResource,
+  addProject,
+  getResources,
+  getResourceById,
+  getProjectById,
+} = require("../dbHelpers");
 
 const router = express.Router();
 
@@ -13,7 +19,7 @@ router.post("/resources", validateBody("resources"), async (req, res, next) => {
     res.status(201).json(addedResource);
   } catch ({ errno, code, message }) {
     next({
-      message: "The resource could not be retrieved at this moment.",
+      message: "The resource could not be added at this moment.",
       errno,
       code,
       reason: message,
@@ -29,6 +35,22 @@ router.get("/resources", async (req, res, next) => {
   } catch ({ errno, code, message }) {
     next({
       message: "The resources could not be retrieved at this moment.",
+      errno,
+      code,
+      reason: message,
+    });
+  }
+});
+
+router.post("/", async (req, res, next) => {
+  try {
+    const [addedProjectId] = await addProject(req.body);
+    const addedProject = await getProjectById(addedProjectId);
+
+    res.status(201).json(addedProject);
+  } catch ({ errno, code, message }) {
+    next({
+      message: "The project could not be added at this moment.",
       errno,
       code,
       reason: message,

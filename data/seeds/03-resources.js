@@ -7,17 +7,15 @@ exports.seed = function (knex) {
           id: 1,
           name: "Stack OverFlow",
           description: "Google it",
-          project_id: 3,
         },
-        { id: 2, name: "LambdaSchool", description: "Try it", project_id: 3 },
+        { id: 2, name: "LambdaSchool", description: "Try it" },
         {
           id: 3,
           name: "Google",
           description: "Start searching",
-          project_id: 3,
         },
-        { id: 4, name: "Library", description: "Walk there", project_id: 1 },
-        { id: 5, name: "Taken notes", description: "Find them", project_id: 4 },
+        { id: 4, name: "Library", description: "Walk there" },
+        { id: 5, name: "Taken notes", description: "Find them" },
       ]);
     });
 };

@@ -4,8 +4,8 @@ const getResources = () => db("resources");
 
 const getProjects = () => db("projects");
 
-const getTasks = () =>
-  db("tasks as t")
+const getTasks = () => {
+  return db("tasks as t")
     .select(
       "t.id as task_id",
       "t.description as task_description",
@@ -15,6 +15,7 @@ const getTasks = () =>
       "p.description as project_description"
     )
     .join("projects as p", "t.project_id", "p.id");
+};
 
 const getResourceById = id => db("resources").where({ id }).first();
 
@@ -22,7 +23,13 @@ const getProjectById = id => db("projects").where({ id }).first();
 
 const getTaskById = id => db("tasks").where({ id }).first();
 
-const addResource = newResource => db("resources").insert(newResource);
+const addResource = newResource => {
+  return db("resources as r").insert(newResource);
+};
+
+const syncProjectsResources = projectResourcePair => {
+  return db("project_resources").insert(projectResourcePair);
+};
 
 const addProject = newProject => db("projects").insert(newProject);
 
@@ -30,6 +37,7 @@ const addTask = newTask => db("tasks").insert(newTask);
 
 module.exports = {
   addResource,
+  syncProjectsResources,
   addProject,
   addTask,
   getResources,

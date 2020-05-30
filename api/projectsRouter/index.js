@@ -5,6 +5,7 @@ const {
   addResource,
   addProject,
   getResources,
+  getProjects,
   getResourceById,
   getProjectById,
 } = require("../dbHelpers");
@@ -42,7 +43,7 @@ router.get("/resources", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/", validateBody("projects"), async (req, res, next) => {
   try {
     const [addedProjectId] = await addProject(req.body);
     const addedProject = await getProjectById(addedProjectId);
@@ -51,6 +52,21 @@ router.post("/", async (req, res, next) => {
   } catch ({ errno, code, message }) {
     next({
       message: "The project could not be added at this moment.",
+      errno,
+      code,
+      reason: message,
+    });
+  }
+});
+
+router.get("/", async (req, res, next) => {
+  try {
+    const resources = await getProjects();
+
+    res.status(200).json(resources);
+  } catch ({ errno, code, message }) {
+    next({
+      message: "The projects could not be retrieved at this moment.",
       errno,
       code,
       reason: message,

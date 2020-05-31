@@ -40,7 +40,7 @@ const addResource = newResource => {
   return db("resources as r").insert(newResource);
 };
 
-const syncProjectResource = projectResourcePair => {
+const updateProjectResource = projectResourcePair => {
   return db("project_resources").insert(projectResourcePair);
 };
 
@@ -50,7 +50,7 @@ const addTask = newTask => db("tasks").insert(newTask);
 
 module.exports = {
   addResource,
-  syncProjectResource,
+  updateProjectResource,
   addProject,
   addTask,
   getResources,

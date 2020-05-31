@@ -4,7 +4,7 @@ const router = express.Router();
 
 const {
   addResource,
-  syncProjectResource,
+  updateProjectResource,
   getResources,
   getResourceById,
 } = require("../dbHelpers");
@@ -19,7 +19,7 @@ router.post(
       const project_id = req.params.id;
 
       const [resource_id] = await addResource(req.body);
-      await syncProjectResource({ project_id, resource_id });
+      await updateProjectResource({ project_id, resource_id });
       const addedResource = await getResourceById(resource_id);
 
       res.status(201).json(addedResource);

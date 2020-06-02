@@ -38,13 +38,21 @@ Commit your code regularly and use descriptive messages. This helps both you (in
 
 Demonstrate your understanding of this week's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your project manager.
 
-- [ ] Explain the difference between `Relational Databases` and `SQL`.
+- [1] Explain the difference between `Relational Databases Management System` and `SQL`.
+- RDBMS is the software used to manage the storage, querying, updating ...ect in the other
+  hand, SQL, the structured query language is used to query the RDBMS.
 
-- [ ] Why do tables need a `primary key`?
+- [2] Why do tables need a `primary key`?
+- The primary key is used to identify every record in a table. Without it we would
+  loose truck of the records we're adding or updating.
 
-- [ ] What is the name given to a table column that references the primary key on another table.
+- [3] What is the name given to a table column that references the primary key on another table.
+- In most cases it's the other table column name followed with id. Example: user_id
+  references a user in the users table.
 
-- [ ] What do we need in order to have a _many to many_ relationship between two tables.
+- [4] What do we need in order to have a _many to many_ relationship between two tables.
+- We need a record from table A to have many records in table B, and a record from table B
+  could belong to many records in table A.
 
 ## Minimum Viable Product
 
